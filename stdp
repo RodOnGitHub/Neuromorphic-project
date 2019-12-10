@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+import nengo
+import numpy as np
+
+
+model = nengo.Network()
+with model:
+    sin = nengo.Node(lambda t: np.sin(t * 4))
+
+    pre = nengo.Ensemble(100, dimensions=1)
+    post = nengo.Ensemble(100, dimensions=1)
+    temp = nengo.Ensemble(100, dimensions = 2)
+    nengo.Connection(pre,temp[0])
+    nengo.Connection(post,temp[1])
+    nengo.Connection(sin, pre)
+    global w
+    w = np.ones([pre.n_neurons,post.n_neurons])
+
+
+    def stdp( w,input):
+        # input = [t_pre,t_post]
+        alpha = 0.85
+        Lambda = 0.03
+        tau_plus = 0.0168
+        tau_minus = 0.0337
+        output = np.dot(w,input)*0.01
+        if input[0]>input[1]:
+            w -=alpha*Lambda*np.exp((input[1]-input[0])/tau_minus)
+        elif input[1]>input[0]:
+            w += Lambda*np.exp((input[0]-input[1])/tau_plus)
+        return output
+    
+    #weights = nengo.Probe(conn,'weights')
+    learner = nengo.Node(stdp, size_in=temp.n_neurons,
+                     size_out=post.n_neurons)
+    nengo.Connection(temp,learner, synapse=None)
+    
+    nengo.Connection(learner, post.neurons, synapse=0.05)
+    
+
+    
+    
