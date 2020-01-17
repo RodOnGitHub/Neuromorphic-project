@@ -1,11 +1,10 @@
-# Neuromorphic Project
+# Group 2: Neuromorphic Project
 
-## Description
-Implementing the paper: [**Solving a classification task by spiking neurons with STDPand temporal coding**](https://www.sciencedirect.com/science/article/pii/S1877050918300760)
+## Description:
 
-## Collaborators
+Implementing the paper: [**Solving a classification task by spiking neurons with STDP and temporal coding**](https://www.sciencedirect.com/science/article/pii/S1877050918300760)
 
-**Part of Group 2**
+## Collaborators:
 
 Chris Beem
 
